@@ -6,12 +6,12 @@ This is a real-time tic tac toe game, in which two players can play against each
 2. Technology
 ==================
 
-The game is using long-polling connections for communication between the client and the server. Each received message by the server is broadcasted to all open connections. Websockets would be more reliable. Since an event can happen while some of the client are reconnecting, a messege queue should be implemented, and clients should send the timestamp of the last message they received. This is not implemented in the current release.
+The game is using long-polling connections for communication between the client and the server. Each received message by the server is broadcasted to all open connections. Websockets would be more reliable. Since an event can happen while some of the client are reconnecting, a message queue should be implemented, and clients should send the timestamp of the last message they received. This is not implemented in the current release.
 
 3. Server
 ==================
 
-The server responds to POST requests with json formated data. Each message should provide room and command parameters, and may provide any other parameters used by the corresponding commands.
+The server responds to POST requests with json formatted data. Each message should provide room and command parameters, and may provide any other parameters used by the corresponding commands.
 
 The client should send init as the first command. While no response is received, the client is the only connected to the room given and game can't be started. As soon as there is second player, the server responds to the init command, telling each client which player it is.
 
@@ -28,8 +28,8 @@ The server does not store the actual state, which means that any new watcher can
 
 The client has 3 main components – the Board, Game and Connection classes.
 
-The Connection class encapsulate the connection to the server and has only one method – send, which accepts 3 parameters – the command to be issued, the data to be send along with the command, and callback to be called when there is response. The response is also a JSON object, containing both command name and any data associated with the command. If there is a connection error, the last command will be automatically resend, with increasing pause between retries (up to 10 seconds)
+The Connection class encapsulates the connection to the server and has only one method – send, which accepts 3 parameters – the command to be issued, the data to be send along with the command, and callback to be called when there is response. The response is also a JSON object, containing both command name and any data associated with the command. If there is a connection error, the last command will be automatically resent, with increasing pause between retries (up to 10 seconds).
 
-The Game class initializes the connection and the board and it enables/disables the board, depending if the current user is on move or not. The Game class uses event listeners to interact with the board, and it display the status message (if the user is on the move or not, if the game is over, the game result, etc).
+The Game class initializes the connection and the board and it enables/disables the board, depending on whether it's the  current user's turn to move or not. The Game class uses event listeners to interact with the board, and it display the status message (if it's the user's turn to move or not, if the game is over, the game result, etc).
 
-The Board class is the core of the game. It accepts an HTML Table element as the only parameter of it's constructor and binds the game board to the table cells. When user clicks on the cell, a board:set event is dispatched, with the row and cell number. If the move was winnig, a board:winning event is dispatched, and if the last cell is filled and it's not a winning move – a board:full event is dispatched.
+The Board class is the core of the game. It accepts an HTML Table element as the only parameter of its constructor and binds the game board to the table cells. When user clicks on the cell, a board:set event is dispatched, with the row and cell number. If the move was winning, a board:winning event is dispatched, and if the last cell is filled and it's not a winning move – a board:full event is dispatched.
