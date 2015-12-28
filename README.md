@@ -1,3 +1,7 @@
+Changes
+=================
+This was changed by Bryan Kwon
+
 1. Abstract
 ==================
 
