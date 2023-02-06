@@ -1,15 +1,12 @@
-1. Abstract
-==================
+# Abstract
 
 This is a real-time tic tac toe game, in which two players can play against each other over a network, and unlimited users can watch the game. The game consist of a server (node.js application) and client (javascript application)
 
-2. Technology
-==================
+# Technology
 
 The game is using long-polling connections for communication between the client and the server. Each received message by the server is broadcasted to all open connections. Websockets would be more reliable. Since an event can happen while some of the client are reconnecting, a message queue should be implemented, and clients should send the timestamp of the last message they received. This is not implemented in the current release.
 
-3. Server
-==================
+# Server
 
 The server responds to POST requests with json formatted data. Each message should provide room and command parameters, and may provide any other parameters used by the corresponding commands.
 
@@ -23,8 +20,7 @@ The reset command (not-implemented), indicating that a new game was started betw
 
 The server does not store the actual state, which means that any new watcher can't initialize itself with the current game state and will see only the new moves. Server however could store the state, and upon restart ask the first connected players for the current game state, and the client should send a data command, with all the game data, which will be broadcasted to the newly connected watchers or to a reconnected player (if the player accidentally closes the browser for example).
 
-4. Client
-==================
+# Client
 
 The client has 3 main components – the Board, Game and Connection classes.
 
